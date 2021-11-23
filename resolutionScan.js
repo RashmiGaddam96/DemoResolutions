@@ -96,6 +96,7 @@ function updateDiv() {
 }
 
 function Scan(objectThis) {
+    $(':button').prop('disabled', true); // Disable all the buttons
     let buttonValue = objectThis.value;
     //setup for a quick scan using the hand-built quickScan object
     if (buttonValue === "Quick Scan") {
@@ -164,6 +165,7 @@ function displayResults() {
     document.getElementById("holder").innerHTML = html;
     r = 0;
     devices = [];
+    $(':button').prop('disabled', false); // Enable all the buttons
 
 }
 
