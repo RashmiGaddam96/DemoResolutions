@@ -1,0 +1,138 @@
+<html lang="en">
+
+<head>
+    <link rel="shortcut icon" href="#">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, 
+                   initial-scale=1.0">
+    <style>
+        body {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        video {
+            background-color: black;
+            margin-bottom: 1rem;
+        }
+        
+        #error {
+            color: red;
+            padding: 0.6rem;
+            background-color: rgb(236 157 157);
+            margin-bottom: 0.6rem;
+            display: none;
+        }
+    </style>
+    <title>GetUserMedia demo</title>
+</head>
+
+<body>
+    <h1> Demo demo</h1>
+    <div id="videoDiv">
+    </div>
+
+    <div class="row">
+        <h2>Camera Resolution Finder</h2>
+        <div id="selectArea" style="visibility: hidden;">
+            <h4>Select camera(s) below:</h4>
+            <select id="devices" name="Video devices" multiple title="devices"></select>
+        </div>
+    </div>
+
+    <div id="error"></div>
+    <div id="button-container">
+        <button onclick="openCamera()"> Open Camera</button>
+        <button onclick='closeCamera()'>Close Camera</button>
+    </div>
+
+
+
+
+
+
+
+
+    <!-- Radio Buttons
+    <input type="radio" id="radio1" name="demo" CHECKED data-target="#duplication" data-toggle="collapse">
+
+    <input type="radio" id="radio2" name="demo" data-target="#permission" data-toggle="collapse">
+
+    <input type="radio" id="radio3" name="demo" data-target="#duplication-permission" data-toggle="collapse"> HTML Elements
+    <div id="duplication" class="collapse">
+        This will be visible when radio1 or radio3 are clicked, and hidden for radio2</div>
+
+    <div id="permission" class="collapse">
+        This will be visible when radio2 or radio3 are clicked, and hidden for radio1</div>
+
+    <div id="duplication-permission" class="collapse">
+        This will be visible only when radio3 is selected</div> -->
+
+
+
+
+
+
+
+
+    <!-- 
+
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="flexRadioDefault" id="1" data-toggle-value="quickArea">
+        <label class="form-check-label" for="1">
+          QuickScan
+        </label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="flexRadioDefault" id="2" checked data-toggle-value="definedArea ">
+        <label class="form-check-label " for="2 ">
+          Defined Resolutions
+        </label>
+    </div>
+    <div class="form-check ">
+        <input class="form-check-input " type="radio " name="flexRadioDefault " id="3 " data-toggle-value="fullArea ">
+        <label class="form-check-label " for="3 ">
+          Max To Min height Resolution
+        </label>
+    </div> -->
+    <div class="col-sm-6 scanarea well well-sm " id="quickArea " data-toggle-group="quickArea ">
+        <button class="btn btn-primary btn-block " id="quickButton " onclick='Scan(this)' value="Quick Scan">Quick Scan</button>
+        <p id=" quickLabel "></p>
+    </div>
+
+    <div class="col-sm-6 scanarea well well-sm " id="fullArea " data-toggle-group="fullArea ">
+        <button class="btn btn-primary btn-block " id="fullButton " onclick='Scan(this)' value="Full Scan">Full Scan</button>
+        <p>vertical resolution range: <br>
+            <span> max:
+                <input type="text " id="hiRes " value="1080 " size="4 " maxlength="4 " min="1 " max="2160 "
+                    pattern="[0-9]{1,4} " title="hiRes " />
+                to min:
+                <input type="text " id="loRes " value="1 " size="4 " maxlength="4 " min="1 " max="2160 "
+                    pattern="[0-9]{1,4} " title="lowRes " />
+            </span>
+        </p>
+    </div>
+    <div class="col-sm-6 scanarea well well-sm " id="definedArea " data-toggle-group="definedArea ">
+        <button class="btn btn-primary btn-block " id="fullButton " onclick='Scan(this)' value='PreDefinedResolutions'> PreDefinedResolutions</button>
+        <p>vertical resolution range: <br>
+            <span> Width:
+                <input type="text " id="wid " size="4 " maxlength="4 " 
+                    pattern="[0-9]{1,4} " title="wid " />
+                to Height:
+                <input type="text " id="hei " size="4 " maxlength="4 " 
+                    pattern="[0-9]{1,4} " title="hei " />
+            </span>
+        </p>
+    </div>
+    <div id="holder"> </div>
+    <script src="resolutionScan.js "></script>
+
+    <link rel="stylesheet " href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css ">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</body>
+
+</html>
