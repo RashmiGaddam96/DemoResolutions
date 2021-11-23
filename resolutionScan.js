@@ -14,7 +14,11 @@ const constraints = {
 }
 
 function openCamera() {
-    //Ask the User for the access of the device camera and microphone
+    // //Ask the User for the access of the device camera and microphone
+    // navigator.getMedia = (navigator.getUserMedia ||
+    //     navigator.webkitGetUserMedia ||
+    //     navigator.mozGetUserMedia ||
+    //     navigator.msGetUserMedia);
     let content = document.getElementById("videoDiv");
     content.innerHTML += `<video id='video' width="600 " height="300 " autoplay playsinline hidden>
         Sorry, video element not supported in your browsers </video>`;
@@ -30,12 +34,15 @@ function openCamera() {
 
         }).catch(err => {
             // handling the error if any
+            errorElem.innerHTML += 'Err:' + JSON.stringify(err);
+
             console.log(err);
         });
 }
 
 function errorCallback(error) {
     console.log('navigator.getUserMedia error: ', error);
+    errorElem.innerHTML += 'Error:: ' + JSON.stringify(error);
 }
 
 function gotDevices(deviceInfos) {
@@ -59,9 +66,11 @@ function gotDevices(deviceInfos) {
 }
 
 const closeCamera = () => {
+    let content = document.querySelector("video");
+
     if (!receivedMediaStream) {
-        errorElem.innerHTML = "Camera is already closed!";
-        errorElem.style.display = "block";
+        //errorElem.innerHTML = "Camera is already closed!";
+        // errorElem.style.display = "block";
     } else {
         /* MediaStream.getTracks() returns an array of all the 
         MediaStreamTracks being used in the received mediaStream
@@ -71,20 +80,24 @@ const closeCamera = () => {
             mediaTrack.stop();
 
         });
+        console.log("Camera is already closed!")
+            // errorElem.innerHTML = "Camera closed successfully!"
+            // errorElem.style.display = "block";
 
-        errorElem.innerHTML = "Camera closed successfully!"
-        errorElem.style.display = "block";
-
-        updateDiv();
+        updateDiv(content);
     }
 }
 
 
-function updateDiv() {
+function updateDiv(content) {
     setTimeout(() => {
+        debugger
         console.log(localStream);
         localStream.getVideoTracks()[0].stop();
-        let content = document.getElementById("videoDiv");
+        content.src = '';
+
+        localStream.getAudioTracks()[0].stop();
+        //audio.src = '';
         content.srcObject = null
         var child = content.lastElementChild;
         while (child) {
@@ -152,19 +165,24 @@ function Scan(objectThis) {
 }
 
 function displayResults() {
-    var html = `<table class="table table-bordered"> `;
-    for (var i = 0; i < tests.length; i++) {
+    debugger
+    var tar = tests;
+    // localStorage.getItem("storageName");
+
+    var html = `<table class = "table table-bordered">`;
+    for (var i = 0; i < tar.length; i++) {
         html += "<tr>";
-        html += "<td>" + tests[i].label + "</td>";
-        html += "<td>" + tests[i].width + "x" + tests[i].height + "</td>";
-        html += "<td>" + tests[i].ratio + "</td>";
-        html += "<td>" + tests[i].status + "</td>";
+        html += "<td>" + tar[i].label + "</td>";
+        html += "<td>" + tar[i].width + "x" + tar[i].height + "</td>";
+        html += "<td>" + tar[i].ratio + "</td>";
+        html += "<td>" + tar[i].status + "</td>";
         html += "</tr>";
     }
-    html += "</table>";
+    html += `</table>`;
     document.getElementById("holder").innerHTML = html;
     r = 0;
     devices = [];
+    // window.localStorage.setItem("storageName", tests);
     $(':button').prop('disabled', false); // Enable all the buttons
 
 }
@@ -194,8 +212,12 @@ function checkResolutions(candidate, device) {
             })
             .catch((error) => {
                 console.log('getUserMedia error!', error);
+                errorElem.innerHTML += 'ErrorGetUderMediaError::' + JSON.stringify(error);
+
 
                 if (scanning) {
+                    errorElem.innerHTML += 'ErrorFail::' + error;
+
                     captureResults("fail: " + error.name);
                 }
             });
@@ -228,7 +250,15 @@ function captureResults(status) {
     } else { //finish up
         scanning = false;
         if (devices) {
-            setTimeout(() => { displayResults() }, 10)
+            setTimeout(() => {
+                displayResults();
+                // window.location.href = 'display.html';
+
+                // window.onload = function() {
+                //     //var getInput = prompt("Hey type something here: ");
+                //     localStorage.setItem("storageName", tests);
+                // }
+            }, 10)
 
         }
     }
@@ -239,30 +269,30 @@ function captureResults(status) {
 
 const quickScan = [
 
-    // {
-    //     "label": "4K(UHD)",
-    //     "width": 3840,
-    //     "height": 2160,
-    //     "ratio": "16:9"
-    // },
-    // {
-    //     "label": "1080p(FHD)",
-    //     "width": 1920,
-    //     "height": 1080,
-    //     "ratio": "16:9"
-    // },
-    // {
-    //     "label": "UXGA",
-    //     "width": 1600,
-    //     "height": 1200,
-    //     "ratio": "4:3"
-    // },
-    // {
-    //     "label": "720p(HD)",
-    //     "width": 1280,
-    //     "height": 720,
-    //     "ratio": "16:9"
-    // },
+    {
+        "label": "4K(UHD)",
+        "width": 3840,
+        "height": 2160,
+        "ratio": "16:9"
+    },
+    {
+        "label": "1080p(FHD)",
+        "width": 1920,
+        "height": 1080,
+        "ratio": "16:9"
+    },
+    {
+        "label": "UXGA",
+        "width": 1600,
+        "height": 1200,
+        "ratio": "4:3"
+    },
+    {
+        "label": "720p(HD)",
+        "width": 1280,
+        "height": 720,
+        "ratio": "16:9"
+    },
     {
         "label": "SVGA",
         "width": 800,
