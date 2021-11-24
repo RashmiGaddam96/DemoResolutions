@@ -355,21 +355,15 @@ const quickScan = [
         "ratio": ""
     },
     {
-        "label": "VGA(0.3p)",
-        "width": 640,
-        "height": 480,
-        "ratio": "4:3"
-    },
-    {
         "label": "360p(nHD)",
         "width": 640,
         "height": 360,
         "ratio": "16:9"
     },
     {
-        "label": "SD(480p)",
+        "label": "SD(480p)/VGA(0.3p)",
         "width": 640,
-        "height": 360,
+        "height": 480,
         "ratio": "4:3"
     },
     {
@@ -380,12 +374,6 @@ const quickScan = [
     },
     {
         "label": "4CIF",
-        "width": 704,
-        "height": 480,
-        "ratio": ""
-    },
-    {
-        "label": "SD",
         "width": 704,
         "height": 480,
         "ratio": ""
