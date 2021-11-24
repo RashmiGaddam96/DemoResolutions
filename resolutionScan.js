@@ -1,4 +1,4 @@
-const errorElem = document.getElementById('error');
+const errorElem = document.getElementById('error'); // for testing errors in mobile
 let receivedMediaStream = null;
 let devices = [];
 let deviceList = document.getElementById("devices");
@@ -12,6 +12,7 @@ const constraints = {
     audio: true,
     video: true
 }
+document.onload = openCamera();
 
 function openCamera() {
     // //Ask the User for the access of the device camera and microphone
@@ -22,7 +23,7 @@ function openCamera() {
     let content = document.getElementById("videoDiv");
     content.innerHTML += `<video id='video' width="600 " height="300 " autoplay playsinline hidden>
         Sorry, video element not supported in your browsers </video>`;
-    const videoElem = document.getElementById('video');
+    let videoElem = document.getElementById('video');
     navigator.mediaDevices.getUserMedia(constraints)
         .then(mediaStream => {
             videoElem.srcObject = mediaStream;
@@ -35,7 +36,6 @@ function openCamera() {
         }).catch(err => {
             // handling the error if any
             errorElem.innerHTML += 'Err:' + JSON.stringify(err);
-
             console.log(err);
         });
 }
@@ -59,8 +59,6 @@ function gotDevices(deviceInfos) {
             deviceList.add(option);
             camcount++;
         }
-        devices.filter((item, index) => devices.indexOf(item) !== index);
-
     }
     console.log(devices);
 }
@@ -84,29 +82,22 @@ const closeCamera = () => {
             // errorElem.innerHTML = "Camera closed successfully!"
             // errorElem.style.display = "block";
 
-        updateDiv(content);
+        setTimeout(() => {
+            console.log(localStream);
+            localStream.getVideoTracks()[0].stop();
+            content.src = '';
+
+            localStream.getAudioTracks()[0].stop();
+            content.srcObject = null
+            var child = content.lastElementChild;
+            while (child) {
+                content.removeChild(child);
+                child = content.lastElementChild;
+            }
+        }, 10);
     }
 }
 
-
-function updateDiv(content) {
-    setTimeout(() => {
-        debugger
-        console.log(localStream);
-        localStream.getVideoTracks()[0].stop();
-        content.src = '';
-
-        localStream.getAudioTracks()[0].stop();
-        //audio.src = '';
-        content.srcObject = null
-        var child = content.lastElementChild;
-        while (child) {
-            content.removeChild(child);
-            child = content.lastElementChild;
-        }
-    }, 10);
-
-}
 
 function Scan(objectThis) {
     $(':button').prop('disabled', true); // Disable all the buttons
@@ -117,17 +108,14 @@ function Scan(objectThis) {
         tests = quickScan;
     } else if (buttonValue === "Full Scan") {
         let highRes = document.getElementById("hiRes").value;
-
         let lowRes = document.getElementById("loRes").value;
         console.log("Full scan from " + lowRes + " to " + highRes);
         tests = createAllResolutions(parseInt(lowRes), parseInt(highRes));
     } else if (buttonValue == "PreDefinedResolutions") {
         let wid = document.getElementById("wid").value;
         let hei = document.getElementById("hei").value;
-        console.log("Full scan from " + wid + " to " + hei);
         tests = definedResolutions(wid, hei);
     }
-    debugger
     scanning = true;
 
     if (devices) {
@@ -149,7 +137,7 @@ function Scan(objectThis) {
                 }
             }
         }
-
+        console.log(selectedCamera, "selectedCamera");
         //Make sure there is at least 1 camera selected before starting
         if (selectedCamera[0]) {
             checkResolutions(tests[r], selectedCamera[0]);
@@ -159,29 +147,10 @@ function Scan(objectThis) {
             checkResolutions(tests[r], selectedCamera[0]);
         }
     }
-
     console.log(tests);
-
 }
 
-function displayResults() {
-    debugger
-    var tar = tests;
-    var html = `<table class = "table table-bordered">`;
-    for (var i = 0; i < tar.length; i++) {
-        html += "<tr>";
-        html += "<td>" + tar[i].label + "</td>";
-        html += "<td>" + tar[i].width + "x" + tar[i].height + "</td>";
-        html += "<td>" + tar[i].ratio + "</td>";
-        html += "<td>" + tar[i].status + "</td>";
-        html += "</tr>";
-    }
-    html += `</table>`;
-    document.getElementById("holder").innerHTML = html;
-    r = 0;
-    $(':button').prop('disabled', false); // Enable all the buttons
 
-}
 
 function checkResolutions(candidate, device) {
     //Kill any running streams;
@@ -209,12 +178,9 @@ function checkResolutions(candidate, device) {
             .catch((error) => {
                 console.log('getUserMedia error!', error);
                 errorElem.innerHTML += 'ErrorGetUderMediaError::' + JSON.stringify(error);
-
-
                 if (scanning) {
                     errorElem.innerHTML += 'ErrorFail::' + error;
-
-                    captureResults("fail: " + error.name);
+                    captureResults("Fail: " + error.name);
                 }
             });
     }, (window.stream ? 200 : 0));
@@ -226,7 +192,7 @@ function gotStream(mediaStream, candidate) {
     console.log("Display size for " + candidate.label + ": " + candidate.width + "x" + candidate.height + " Sucess");
     window.stream = mediaStream;
     video.srcObject = mediaStream;
-    captureResults("success")
+    captureResults("Success")
 }
 
 function captureResults(status) {
@@ -248,16 +214,28 @@ function captureResults(status) {
                 displayResults();
 
             }, 10)
-
         }
     }
 }
 
-
-
-
-
-
+function displayResults() {
+    var results = tests;
+    let text = "<h4> Selected Camera :" + selectedCamera[camNum].label + "</h4>";;
+    var html = text + ` <table class = "table table-bordered m-2" > <tr> <th> Label </th><th>Width x Height</th> <th> Ratio </th><th>Status</th> </tr>`;
+    for (var i = 0; i < results.length; i++) {
+        html += "<tr>";
+        html += "<td>" + results[i].label + "</td>";
+        html += "<td>" + results[i].width + " x " + results[i].height + "</td>";
+        html += "<td>" + results[i].ratio + "</td>";
+        html += "<td>" + results[i].status + "</td>";
+        html += "</tr>";
+    }
+    html += `</table>`;
+    document.getElementById("results").innerHTML = html;
+    r = 0;
+    $(':button').prop('disabled', false); // Enable all the buttons
+    closeCamera();
+}
 
 function definedResolutions(width, height) {
     let resolutions = [],
@@ -271,9 +249,7 @@ function definedResolutions(width, height) {
     };
     resolutions.push(res);
     return resolutions;
-
 }
-
 
 //creates an object with all HD & SD video ratios between two heights
 function createAllResolutions(minHeight, maxHeight) {
@@ -316,7 +292,9 @@ function createAllResolutions(minHeight, maxHeight) {
     return resolutions;
 }
 
-const quickScan = [{
+const quickScan = [
+
+    {
         "label": "QQVGA",
         "width": 160,
         "height": 120,
@@ -575,7 +553,7 @@ const quickScan = [{
         "ratio": "16:9"
     },
     {
-        "label": "FHD+(mobile)",
+        "label": "FHD+ (mobile)",
         "width": 2400,
         "height": 1080,
         "ratio": "40:1"
@@ -587,13 +565,13 @@ const quickScan = [{
         "ratio": ""
     },
     {
-        "label": "5 MP 4:3",
+        "label": "5MP 4:3",
         "width": 2562,
         "height": 1944,
         "ratio": "4:3"
     },
     {
-        "label": "5 MP",
+        "label": "5MP",
         "width": 2576,
         "height": 1932,
         "ratio": ""
@@ -605,7 +583,7 @@ const quickScan = [{
         "ratio": ""
     },
     {
-        "label": "5 mp16:9",
+        "label": "5MP 16:9",
         "width": 3072,
         "height": 1728,
         "ratio": "16:9"
