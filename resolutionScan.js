@@ -167,8 +167,6 @@ function Scan(objectThis) {
 function displayResults() {
     debugger
     var tar = tests;
-    // localStorage.getItem("storageName");
-
     var html = `<table class = "table table-bordered">`;
     for (var i = 0; i < tar.length; i++) {
         html += "<tr>";
@@ -181,8 +179,6 @@ function displayResults() {
     html += `</table>`;
     document.getElementById("holder").innerHTML = html;
     r = 0;
-    devices = [];
-    // window.localStorage.setItem("storageName", tests);
     $(':button').prop('disabled', false); // Enable all the buttons
 
 }
@@ -228,8 +224,6 @@ function checkResolutions(candidate, device) {
 function gotStream(mediaStream, candidate) {
     //change the video dimensions
     console.log("Display size for " + candidate.label + ": " + candidate.width + "x" + candidate.height + " Sucess");
-    // video.width = candidate.width;
-    // video.height = candidate.height;
     window.stream = mediaStream;
     video.srcObject = mediaStream;
     captureResults("success")
@@ -252,12 +246,7 @@ function captureResults(status) {
         if (devices) {
             setTimeout(() => {
                 displayResults();
-                // window.location.href = 'display.html';
 
-                // window.onload = function() {
-                //     //var getInput = prompt("Hey type something here: ");
-                //     localStorage.setItem("storageName", tests);
-                // }
             }, 10)
 
         }
@@ -267,144 +256,18 @@ function captureResults(status) {
 
 
 
-const quickScan = [
-    { "label": "QQVGA", "width": 160, "height": 120, "ratio": "4:3" }
 
-    , { "label": "QCIF", "width": 176, "height": 144, "ratio": "4:3" }
-
-    , { "label": "QCIF", "width": 192, "height": 144, "ratio": "" }
-
-    , { "label": "HQVGA", "width": 240, "height": 160, "ratio": "" }
-
-    , { "label": "QVGA", "width": 320, "height": 240, "ratio": "4:3" }
-
-    , { "label": "CIF", "width": 352, "height": 288, "ratio": "4:3" }
-
-    , { "label": "CD NTSC", "width": 352, "height": 240, "ratio": "" }
-
-    , { "label": "CD PAL", "width": 352, "height": 288, "ratio": "" }
-
-    , { "label": "xCIF", "width": 384, "height": 288, "ratio": "" }
-
-    , { "label": "360p", "width": 480, "height": 360, "ratio": "" }
-
-    , { "label": "VGA", "width": 640, "height": 480, "ratio": "4:3" }
-
-    , { "label": "360p(nHD)", "width": 640, "height": 360, "ratio": "16:9" }
-
-    , { "label": "nHD", "width": 640, "height": 360, "ratio": "" }
-
-    , { "label": "SD", "width": 704, "height": 480, "ratio": "" }
-
-    , { "label": "DVD NT SC", "width": 720, "height": 480, "ratio": "" }
-
-    , { "label": "SVGA", "width": 800, "height": 600, "ratio": "4:3" }
-
-    , { "label": "WGA", "width": 800, "height": 480, "ratio": "" }
-
-    , { "label": "DVCPRO HD", "width": 960, "height": 720, "ratio": "" }
-
-    , { "label": "XGA", "width": 1024, "height": 768, "ratio": "" }
-
-    , { "label": "XGA ", "width": 1024, "height": 768, "ratio": "4:3" }
-
-    , { "label": "WXGA", "width": 1152, "height": 768, "ratio": "3:2" }
-
-    , { "label": "XGA+", "width": 1152, "height": 864, "ratio": "4:3" }
-
-    , { "label": "720p(HD)", "width": 1280, "height": 720, "ratio": "16:9" }
-
-    , { "label": "HD", "width": 1280, "height": 720, "ratio": "" }
-
-    , { "label": "WXGA", "width": 1280, "height": 800, "ratio": "" }
-
-    , { "label": "SXGA−", "width": 1280, "height": 960, "ratio": "" }
-
-    , { "label": "SXGA", "width": 1280, "height": 1024, "ratio": "" }
-
-    , { "label": "WXGA", "width": 1280, "height": 768, "ratio": "5:3" }
-
-    , { "label": "WXGA", "width": 1360, "height": 768, "ratio": "16:9" }
-
-    , { "label": "FWXGA", "width": 1366, "height": 768, "ratio": "16:9" }
-
-    , { "label": "SXGA+", "width": 1400, "height": 1050, "ratio": "4:3" }
-
-    , { "label": "WXGA+", "width": 1440, "height": 900, "ratio": "16:10" }
-
-    , { "label": "WSXGA", "width": 1440, "height": 960, "ratio": "3:2" }
-
-    , { "label": "UXGA", "width": 1600, "height": 1200, "ratio": "4:3" }
-
-    , { "label": "WSXGA+", "width": 1680, "height": 1050, "ratio": "16:10" }
-
-    , { "label": "1080p(FHD)", "width": 1920, "height": 1080, "ratio": "16:9" }
-
-    , { "label": "FHD", "width": 1920, "height": 1080, "ratio": "" }
-
-    , { "label": "WUXGA", "width": 1920, "height": 1200, "ratio": "16:10" }
-
-    , { "label": "QXGA", "width": 2048, "height": 1536, "ratio": "" }
-
-    , { "label": "QSXGA", "width": 2560, "height": 2048, "ratio": "" }
-
-    , { "label": "QUXGA", "width": 3200, "height": 2400, "ratio": "" }
-
-    , { "label": "4K(UHD)", "width": 3840, "height": 2160, "ratio": "16:9" }
-
-    , { "label": "DCI 4K", "width": 4096, "height": 2160, "ratio": "" }
-
-    , { "label": "HXGA", "width": 4096, "height": 3072, "ratio": "" }
-
-    , { "label": "UW5K", "width": 5120, "height": 2160, "ratio": "" }
-
-    , { "label": "5K", "width": 5120, "height": 2880, "ratio": "" }
-
-    , { "label": "WHXGA", "width": 5120, "height": 3200, "ratio": "" }
-
-    , { "label": "HSXGA", "width": 5120, "height": 4096, "ratio": "" }
-
-    , { "label": "WHSXGA", "width": 6400, "height": 4096, "ratio": "" }
-
-    , { "label": "HUXGA", "width": 6400, "height": 4800, "ratio": "" }
-
-    , { "label": "8K UHD", "width": 7680, "height": 4320, "ratio": "" }
-
-    , { "label": "WHUXGA", "width": 7680, "height": 4800, "ratio": "" }
-
-    , { "label": "UW10K", "width": 10240, "height": 4320, "ratio": "" }
-];
 
 
 function definedResolutions(width, height) {
     let resolutions = [],
         res;
 
-    //HD
     res = {
         "label": width + "x" + height,
         "width": width, //this was returning a string
         "height": height,
         "ratio": "16:9"
-    };
-    resolutions.push(res);
-
-    //SD
-    res = {
-        "label": width + "x" + height,
-        "width": width,
-        "height": height,
-        "ratio": "4:3"
-    };
-    resolutions.push(res);
-
-    //square
-    //noinspection JSSuspiciousNameCombination
-    res = {
-        "label": width + "x" + height,
-        "width": width,
-        "height": height,
-        "ratio": "1:1"
     };
     resolutions.push(res);
     return resolutions;
@@ -440,7 +303,6 @@ function createAllResolutions(minHeight, maxHeight) {
         resolutions.push(res);
 
         //square
-        //noinspection JSSuspiciousNameCombination
         res = {
             "label": y + "x" + y,
             "width": y,
@@ -453,3 +315,407 @@ function createAllResolutions(minHeight, maxHeight) {
     console.log("resolutions length: " + resolutions.length);
     return resolutions;
 }
+
+const quickScan = [{
+        "label": "QQVGA",
+        "width": 160,
+        "height": 120,
+        "ratio": "4:3"
+    },
+    {
+        "label": "QCIF",
+        "width": 176,
+        "height": 120,
+        "ratio": ""
+    },
+    {
+        "label": "QCIF",
+        "width": 176,
+        "height": 144,
+        "ratio": "4:3"
+    },
+    {
+        "label": "QCIF",
+        "width": 192,
+        "height": 144,
+        "ratio": ""
+    },
+    {
+        "label": "HQVGA",
+        "width": 240,
+        "height": 160,
+        "ratio": ""
+    },
+    {
+        "label": "QVGA",
+        "width": 320,
+        "height": 240,
+        "ratio": "4:3"
+    },
+    {
+        "label": "CIF/CD NTSC",
+        "width": 352,
+        "height": 240,
+        "ratio": ""
+    },
+    {
+        "label": "CIF/CD PAL",
+        "width": 352,
+        "height": 288,
+        "ratio": "4:3"
+    },
+    {
+        "label": "xCIF",
+        "width": 384,
+        "height": 288,
+        "ratio": ""
+    },
+    {
+        "label": "360p",
+        "width": 480,
+        "height": 360,
+        "ratio": ""
+    },
+    {
+        "label": "VGA(0.3p)",
+        "width": 640,
+        "height": 480,
+        "ratio": "4:3"
+    },
+    {
+        "label": "360p(nHD)",
+        "width": 640,
+        "height": 360,
+        "ratio": "16:9"
+    },
+    {
+        "label": "SD(480p)",
+        "width": 640,
+        "height": 360,
+        "ratio": "4:3"
+    },
+    {
+        "label": "2CIF",
+        "width": 704,
+        "height": 240,
+        "ratio": ""
+    },
+    {
+        "label": "4CIF",
+        "width": 704,
+        "height": 480,
+        "ratio": ""
+    },
+    {
+        "label": "SD",
+        "width": 704,
+        "height": 480,
+        "ratio": ""
+    },
+    {
+        "label": "DVD NT SC/d1",
+        "width": 720,
+        "height": 480,
+        "ratio": ""
+    },
+    {
+        "label": "SVGA",
+        "width": 800,
+        "height": 600,
+        "ratio": "4:3"
+    },
+    {
+        "label": "WGA",
+        "width": 800,
+        "height": 480,
+        "ratio": ""
+    },
+    {
+        "label": "DVCPRO HD",
+        "width": 960,
+        "height": 720,
+        "ratio": ""
+    },
+    {
+        "label": "XGA ",
+        "width": 1024,
+        "height": 768,
+        "ratio": "4:3"
+    },
+    {
+        "label": "WXGA",
+        "width": 1152,
+        "height": 768,
+        "ratio": "3:2"
+    },
+    {
+        "label": "XGA+",
+        "width": 1152,
+        "height": 864,
+        "ratio": "4:3"
+    },
+    {
+        "label": "720p(HD)/1MP",
+        "width": 1280,
+        "height": 720,
+        "ratio": "16:9"
+    },
+    {
+        "label": "WXGA",
+        "width": 1280,
+        "height": 800,
+        "ratio": ""
+    },
+    {
+        "label": "SXGA−",
+        "width": 1280,
+        "height": 960,
+        "ratio": ""
+    },
+    {
+        "label": "SXGA",
+        "width": 1280,
+        "height": 1024,
+        "ratio": ""
+    },
+    {
+        "label": "WXGA",
+        "width": 1280,
+        "height": 768,
+        "ratio": "5:3"
+    },
+    {
+        "label": "WXGA",
+        "width": 1360,
+        "height": 768,
+        "ratio": "16:9"
+    },
+    {
+        "label": "FWXGA",
+        "width": 1366,
+        "height": 768,
+        "ratio": "16:9"
+    },
+    {
+        "label": "SXGA+",
+        "width": 1400,
+        "height": 1050,
+        "ratio": "4:3"
+    },
+    {
+        "label": "WXGA+",
+        "width": 1440,
+        "height": 900,
+        "ratio": "16:1"
+    },
+    {
+        "label": "WSXGA",
+        "width": 1440,
+        "height": 960,
+        "ratio": "3:2"
+    },
+    {
+        "label": "1080P 4:3",
+        "width": 1440,
+        "height": 1080,
+        "ratio": "4:3"
+    },
+    {
+        "label": "UXGA",
+        "width": 1600,
+        "height": 1200,
+        "ratio": "4:3"
+    },
+    {
+        "label": "WSXGA+",
+        "width": 1680,
+        "height": 1050,
+        "ratio": "16:1"
+    },
+    {
+        "label": "1080p(FHD)/2MP",
+        "width": 1920,
+        "height": 1080,
+        "ratio": "16:9"
+    },
+    {
+        "label": "WUXGA",
+        "width": 1920,
+        "height": 1200,
+        "ratio": "16:1"
+    },
+    {
+        "label": "QXGA(3MP 4:3)",
+        "width": 2048,
+        "height": 1536,
+        "ratio": "4:3"
+    },
+    {
+        "label": "2.5K",
+        "width": 2432,
+        "height": 1366,
+        "ratio": ""
+    },
+    {
+        "label": "2K",
+        "width": 2048,
+        "height": 1152,
+        "ratio": "1:1.77"
+    },
+    {
+        "label": "FHD+(mobile)",
+        "width": 2160,
+        "height": 1080,
+        "ratio": "18:9"
+    },
+    {
+        "label": "3MP 16:9",
+        "width": 2304,
+        "height": 1296,
+        "ratio": "16:9"
+    },
+    {
+        "label": "FHD+(mobile)",
+        "width": 2400,
+        "height": 1080,
+        "ratio": "40:1"
+    },
+    {
+        "label": "QSXGA",
+        "width": 2560,
+        "height": 2048,
+        "ratio": ""
+    },
+    {
+        "label": "5 MP 4:3",
+        "width": 2562,
+        "height": 1944,
+        "ratio": "4:3"
+    },
+    {
+        "label": "5 MP",
+        "width": 2576,
+        "height": 1932,
+        "ratio": ""
+    },
+    {
+        "label": "4MP",
+        "width": 2688,
+        "height": 1520,
+        "ratio": ""
+    },
+    {
+        "label": "5 mp16:9",
+        "width": 3072,
+        "height": 1728,
+        "ratio": "16:9"
+    },
+    {
+        "label": "6MP",
+        "width": 3072,
+        "height": 2048,
+        "ratio": ""
+    },
+    {
+        "label": "7MP",
+        "width": 3088,
+        "height": 2320,
+        "ratio": ""
+    },
+    {
+        "label": "QUXGA",
+        "width": 3200,
+        "height": 2400,
+        "ratio": ""
+    },
+    {
+        "label": "8MP",
+        "width": 3264,
+        "height": 2448,
+        "ratio": ""
+    },
+    {
+        "label": "4K(UHD)/8MP/2160p",
+        "width": 3840,
+        "height": 2160,
+        "ratio": "16:9"
+    },
+    {
+        "label": "12MP",
+        "width": 4000,
+        "height": 3000,
+        "ratio": ""
+    },
+    {
+        "label": "12MP",
+        "width": 4032,
+        "height": 3024,
+        "ratio": ""
+    },
+    {
+        "label": "DCI 4K",
+        "width": 4096,
+        "height": 2160,
+        "ratio": ""
+    },
+    {
+        "label": "HXGA",
+        "width": 4096,
+        "height": 3072,
+        "ratio": ""
+    },
+    {
+        "label": "UW5K",
+        "width": 5120,
+        "height": 2160,
+        "ratio": ""
+    },
+    {
+        "label": "5K",
+        "width": 5120,
+        "height": 2880,
+        "ratio": "1:1.85"
+    },
+    {
+        "label": "WHXGA",
+        "width": 5120,
+        "height": 3200,
+        "ratio": ""
+    },
+    {
+        "label": "HSXGA",
+        "width": 5120,
+        "height": 4096,
+        "ratio": ""
+    },
+    {
+        "label": "WHSXGA",
+        "width": 6400,
+        "height": 4096,
+        "ratio": ""
+    },
+    {
+        "label": "HUXGA",
+        "width": 6400,
+        "height": 4800,
+        "ratio": ""
+    },
+    {
+        "label": "8K UHD",
+        "width": 7680,
+        "height": 4320,
+        "ratio": ""
+    },
+    {
+        "label": "WHUXGA",
+        "width": 7680,
+        "height": 4800,
+        "ratio": ""
+    },
+    {
+        "label": "UW10K",
+        "width": 10240,
+        "height": 4320,
+        "ratio": ""
+    }
+];
