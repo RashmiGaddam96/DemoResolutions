@@ -26,9 +26,9 @@ function openCamera() {
     let videoElem = document.getElementById('video');
     navigator.mediaDevices.getUserMedia(constraints)
         .then(mediaStream => {
-            //videoElem.srcObject = mediaStream;
-            //receivedMediaStream = mediaStream;
-            //window.localStream = mediaStream;
+            videoElem.srcObject = mediaStream;
+            receivedMediaStream = mediaStream;
+            window.localStream = mediaStream;
             navigator.mediaDevices.enumerateDevices()
                 .then(gotDevices)
                 .catch(errorCallback);
@@ -38,6 +38,7 @@ function openCamera() {
             errorElem.innerHTML += 'Err:' + JSON.stringify(err);
             console.log(err);
         });
+    closeCamera();
 }
 
 function errorCallback(error) {
