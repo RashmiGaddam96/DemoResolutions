@@ -32,13 +32,14 @@ function openCamera() {
             navigator.mediaDevices.enumerateDevices()
                 .then(gotDevices)
                 .catch(errorCallback);
+            closeCamera();
+
 
         }).catch(err => {
             // handling the error if any
             errorElem.innerHTML += 'Err:' + JSON.stringify(err);
             console.log(err);
         });
-    closeCamera();
 }
 
 function errorCallback(error) {
