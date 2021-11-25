@@ -111,6 +111,8 @@ function Scan(objectThis) {
             videoElem.srcObject = mediaStream;
             receivedMediaStream = mediaStream;
             window.localStream = mediaStream;
+            localStream.getAudioTracks()[0].stop();
+
             // navigator.mediaDevices.enumerateDevices()
             //     .then(gotDevices)
             //     .catch(errorCallback);
