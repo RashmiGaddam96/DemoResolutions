@@ -89,7 +89,7 @@ const closeCamera = () => {
             localStream.getVideoTracks()[0].stop();
             content.src = '';
 
-            localStream.getAudioTracks()[0].stop();
+            //localStream.getAudioTracks()[0].stop();
             content.srcObject = null
             var child = content.lastElementChild;
             while (child) {
