@@ -9,7 +9,7 @@ let camNum = 0; //used for iterating through number of camera
 let scanning = false;
 //Declare the MediaStreamConstraints object
 const constraints = {
-    audio: true,
+    audio: false,
     video: true
 }
 document.onload = openCamera();
@@ -24,20 +24,20 @@ function openCamera() {
     content.innerHTML += `<video id='video' width="600 " height="300 " autoplay playsinline hidden>
         Sorry, video element not supported in your browsers </video>`;
     let videoElem = document.getElementById('video');
-    navigator.mediaDevices.getUserMedia(constraints)
-        .then(mediaStream => {
-            videoElem.srcObject = mediaStream;
-            receivedMediaStream = mediaStream;
-            window.localStream = mediaStream;
-            navigator.mediaDevices.enumerateDevices()
-                .then(gotDevices)
-                .catch(errorCallback);
+    // navigator.mediaDevices.getUserMedia(constraints)
+    //     .then(mediaStream => {
+    //         videoElem.srcObject = mediaStream;
+    //         receivedMediaStream = mediaStream;
+    //         window.localStream = mediaStream;
+    navigator.mediaDevices.enumerateDevices()
+        .then(gotDevices)
+        .catch(errorCallback);
 
-        }).catch(err => {
-            // handling the error if any
-            errorElem.innerHTML += 'Err:' + JSON.stringify(err);
-            console.log(err);
-        });
+    // }).catch(err => {
+    //     // handling the error if any
+    //     errorElem.innerHTML += 'Err:' + JSON.stringify(err);
+    //     console.log(err);
+    // });
 }
 
 function errorCallback(error) {
@@ -102,6 +102,27 @@ const closeCamera = () => {
 function Scan(objectThis) {
     $(':button').prop('disabled', true); // Disable all the buttons
     let buttonValue = objectThis.value;
+    let content = document.getElementById("videoDiv");
+    content.innerHTML += `<video id='video' width="600 " height="300 " autoplay playsinline hidden>
+        Sorry, video element not supported in your browsers </video>`;
+    let videoElem = document.getElementById('video');
+    navigator.mediaDevices.getUserMedia(constraints)
+        .then(mediaStream => {
+            videoElem.srcObject = mediaStream;
+            receivedMediaStream = mediaStream;
+            window.localStream = mediaStream;
+            // navigator.mediaDevices.enumerateDevices()
+            //     .then(gotDevices)
+            //     .catch(errorCallback);
+
+        }).catch(err => {
+            // handling the error if any
+            errorElem.innerHTML += 'Err:' + JSON.stringify(err);
+            console.log(err);
+        });
+
+
+
     //setup for a quick scan using the hand-built quickScan object
     if (buttonValue === "Quick Scan") {
         console.log("Quick scan");
