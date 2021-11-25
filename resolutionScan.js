@@ -3,7 +3,7 @@ let receivedMediaStream = null;
 let devices = [];
 let deviceList = document.getElementById("devices");
 let selectedCamera = [];
-let tests;
+let resultsList;
 let r = 0;
 let camNum = 0; //used for iterating through number of camera
 let scanning = false;
@@ -16,10 +16,10 @@ document.onload = openCamera();
 
 function openCamera() {
     // //Ask the User for the access of the device camera and microphone
-    // navigator.getMedia = (navigator.getUserMedia ||
-    //     navigator.webkitGetUserMedia ||
-    //     navigator.mozGetUserMedia ||
-    //     navigator.msGetUserMedia);
+    videoStream(true);
+}
+
+function videoStream(check) {
     let content = document.getElementById("videoDiv");
     content.innerHTML += `<video id='video' width="600 " height="300 " autoplay playsinline hidden>
         Sorry, video element not supported in your browsers </video>`;
@@ -29,12 +29,12 @@ function openCamera() {
             videoElem.srcObject = mediaStream;
             receivedMediaStream = mediaStream;
             window.localStream = mediaStream;
-            navigator.mediaDevices.enumerateDevices()
-                .then(gotDevices)
-                .catch(errorCallback);
-            closeCamera();
-
-
+            if (check) {
+                navigator.mediaDevices.enumerateDevices()
+                    .then(cameraDevicesList)
+                    .catch(errorCallback);
+                closeCamera();
+            }
         }).catch(err => {
             // handling the error if any
             errorElem.innerHTML += 'Err:' + JSON.stringify(err);
@@ -47,11 +47,11 @@ function errorCallback(error) {
     errorElem.innerHTML += 'Error:: ' + JSON.stringify(error);
 }
 
-function gotDevices(deviceInfos) {
+function cameraDevicesList(devicesInfo) {
     document.getElementById('selectArea').style.visibility = "visible";
     let camcount = 1; //used for labeling if the device label is not enumerated
-    for (let i = 0; i !== deviceInfos.length; ++i) {
-        let deviceInfo = deviceInfos[i];
+    for (let i = 0; i !== devicesInfo.length; ++i) {
+        let deviceInfo = devicesInfo[i];
         let option = document.createElement('option');
         option.value = deviceInfo.deviceId;
 
@@ -68,10 +68,7 @@ function gotDevices(deviceInfos) {
 const closeCamera = () => {
     let content = document.querySelector("video");
 
-    if (!receivedMediaStream) {
-        //errorElem.innerHTML = "Camera is already closed!";
-        // errorElem.style.display = "block";
-    } else {
+    if (receivedMediaStream) {
         /* MediaStream.getTracks() returns an array of all the 
         MediaStreamTracks being used in the received mediaStream
         we can iterate through all the mediaTracks and 
@@ -81,15 +78,11 @@ const closeCamera = () => {
 
         });
         console.log("Camera is already closed!")
-            // errorElem.innerHTML = "Camera closed successfully!"
-            // errorElem.style.display = "block";
 
         setTimeout(() => {
             console.log(localStream);
             localStream.getVideoTracks()[0].stop();
             content.src = '';
-
-            //localStream.getAudioTracks()[0].stop();
             content.srcObject = null
             var child = content.lastElementChild;
             while (child) {
@@ -102,49 +95,16 @@ const closeCamera = () => {
 
 
 function Scan(objectThis) {
+    $('#cover-spin').show(0);
     $(':button').prop('disabled', true); // Disable all the buttons
-    let buttonValue = objectThis.value;
-    let content = document.getElementById("videoDiv");
-    content.innerHTML += `<video id='video' width="600 " height="300 " autoplay playsinline hidden>
-        Sorry, video element not supported in your browsers </video>`;
-    let videoElem = document.getElementById('video');
-    navigator.mediaDevices.getUserMedia(constraints)
-        .then(mediaStream => {
-            videoElem.srcObject = mediaStream;
-            receivedMediaStream = mediaStream;
-            window.localStream = mediaStream;
-            localStream.getAudioTracks()[0].stop();
-
-            // navigator.mediaDevices.enumerateDevices()
-            //     .then(gotDevices)
-            //     .catch(errorCallback);
-
-        }).catch(err => {
-            // handling the error if any
-            errorElem.innerHTML += 'Err:' + JSON.stringify(err);
-            console.log(err);
-        });
-
-
+    videoStream(false);
 
     //setup for a quick scan using the hand-built quickScan object
-    if (buttonValue === "Quick Scan") {
-        console.log("Quick scan");
-        tests = quickScan;
-    } else if (buttonValue === "Full Scan") {
-        let highRes = document.getElementById("hiRes").value;
-        let lowRes = document.getElementById("loRes").value;
-        console.log("Full scan from " + lowRes + " to " + highRes);
-        tests = createAllResolutions(parseInt(lowRes), parseInt(highRes));
-    } else if (buttonValue == "PreDefinedResolutions") {
-        let wid = document.getElementById("wid").value;
-        let hei = document.getElementById("hei").value;
-        tests = definedResolutions(wid, hei);
-    }
+    console.log("Quick scan");
+    resultsList = resolutionsData;
     scanning = true;
 
     if (devices) {
-
         //run through the deviceList to see what is selected
         for (let deviceCount = 0, d = 0; d < deviceList.length; d++) {
             if (deviceList[d].selected) {
@@ -165,14 +125,14 @@ function Scan(objectThis) {
         console.log(selectedCamera, "selectedCamera");
         //Make sure there is at least 1 camera selected before starting
         if (selectedCamera[0]) {
-            checkResolutions(tests[r], selectedCamera[0]);
+            checkResolutions(resultsList[r], selectedCamera[0]);
         } else {
             console.log("No camera selected. Defaulting to " + deviceList[0].text);
             selectedCamera[0] = { id: deviceList[0].value, label: deviceList[0].text };
-            checkResolutions(tests[r], selectedCamera[0]);
+            checkResolutions(resultsList[r], selectedCamera[0]);
         }
     }
-    console.log(tests);
+    console.log(resultsList);
 }
 
 
@@ -223,15 +183,15 @@ function gotStream(mediaStream, candidate) {
 function captureResults(status) {
     if (!scanning) //exit if scan is not active
         return;
-    tests[r].status = status;
+    resultsList[r].status = status;
     r++;
-    //go to the next tests
-    if (r < tests.length) {
-        checkResolutions(tests[r], selectedCamera[camNum]);
+    //go to the next resultsList
+    if (r < resultsList.length) {
+        checkResolutions(resultsList[r], selectedCamera[camNum]);
     } else if (camNum < selectedCamera.length - 1) { //move on to the next camera
         camNum++;
         r = 0;
-        checkResolutions(tests[r], selectedCamera[camNum])
+        checkResolutions(resultsList[r], selectedCamera[camNum])
     } else { //finish up
         scanning = false;
         if (devices) {
@@ -244,7 +204,7 @@ function captureResults(status) {
 }
 
 function displayResults() {
-    var results = tests;
+    var results = resultsList;
     let text = "<h4> Selected Camera :" + selectedCamera[camNum].label + "</h4>";;
     var html = text + ` <table class = "table table-bordered m-2" > <tr> <th> Label </th><th>Width x Height</th> <th> Ratio </th><th>Status</th> </tr>`;
     for (var i = 0; i < results.length; i++) {
@@ -260,64 +220,12 @@ function displayResults() {
     r = 0;
     $(':button').prop('disabled', false); // Enable all the buttons
     closeCamera();
+    $('#cover-spin').hide();
 }
 
-function definedResolutions(width, height) {
-    let resolutions = [],
-        res;
 
-    res = {
-        "label": width + "x" + height,
-        "width": width, //this was returning a string
-        "height": height,
-        "ratio": "16:9"
-    };
-    resolutions.push(res);
-    return resolutions;
-}
 
-//creates an object with all HD & SD video ratios between two heights
-function createAllResolutions(minHeight, maxHeight) {
-    const ratioHD = 16 / 9;
-    const ratioSD = 4 / 3;
-
-    let resolutions = [],
-        res;
-
-    for (let y = maxHeight; y >= minHeight; y--) {
-        //HD
-        res = {
-            "label": (y * ratioHD).toFixed() + "x" + y,
-            "width": parseInt((y * ratioHD).toFixed()), //this was returning a string
-            "height": y,
-            "ratio": "16:9"
-        };
-        resolutions.push(res);
-
-        //SD
-        res = {
-            "label": (y * ratioSD).toFixed() + "x" + y,
-            "width": parseInt((y * ratioSD).toFixed()),
-            "height": y,
-            "ratio": "4:3"
-        };
-        resolutions.push(res);
-
-        //square
-        res = {
-            "label": y + "x" + y,
-            "width": y,
-            "height": y,
-            "ratio": "1:1"
-        };
-        resolutions.push(res);
-
-    }
-    console.log("resolutions length: " + resolutions.length);
-    return resolutions;
-}
-
-const quickScan = [
+const resolutionsData = [
 
     {
         "label": "QQVGA",

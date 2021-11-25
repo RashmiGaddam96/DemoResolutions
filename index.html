@@ -5,14 +5,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, 
                    initial-scale=1.0">
-    <title>GetUserMedia demo</title>
+    <title>GetCamera Resolutions</title>
+    <style>
+        #cover-spin {
+            position: fixed;
+            width: 100%;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.7);
+            z-index: 9999;
+            display: none;
+        }
+        
+        @-webkit-keyframes spin {
+            from {
+                -webkit-transform: rotate(0deg);
+            }
+            to {
+                -webkit-transform: rotate(360deg);
+            }
+        }
+        
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        #cover-spin::after {
+            content: '';
+            display: block;
+            position: absolute;
+            left: 48%;
+            top: 40%;
+            width: 40px;
+            height: 40px;
+            border-style: solid;
+            border-color: black;
+            border-top-color: transparent;
+            border-width: 4px;
+            border-radius: 50%;
+            -webkit-animation: spin .8s linear infinite;
+            animation: spin .8s linear infinite;
+        }
+    </style>
 </head>
 
 <body class="col-6">
+    <div id="cover-spin" hidden></div>
     <div class="container m-5 p-2 rounded mx-auto bg shadow">
-        <h1 class="text-center">Demo Camera Resolution</h1>
+        <h1 class="text-center">Camera Checks</h1>
         <div id="videoDiv"></div>
-        <!-- <div class="d-flex justify-content-center align-items-center text-center"><button onload="openCamera()">Open Camera</button><button onclick='closeCamera()'>Close Camera</button></div>-->
         <div class="row rounded">
             <div class='col-lg-3' style="padding: 5px;padding-bottom: 10px !important;margin-bottom: 5px; border: 5px solid rgb(97, 87, 92);border-radius: 20px; ">
                 <div id="selectArea" style="visibility: hidden;padding: 5px;padding-bottom: 8px !important;margin-bottom: 8px;">
@@ -25,36 +73,26 @@
                         <h5 style="margin-bottom: 2px;">Scans the constant resolutions</h5>
                         <div style="padding: 3px;"><button class="btn btn-primary btn-block" id="quickButton" onclick='Scan(this)' value="Quick Scan">Quick Scan</button></div>
                     </div>
-                    <div class="col-6 col-sm-4" id="definedArea" data-toggle-group="definedArea" hidden>
-                        <p>
-                            <h5 style="margin-bottom: 2px;">Width x Height </h5>
-                            <div style="margin:2px; padding :1px;"><label>Width :</label><input type="text" id="wid" size="4" maxlength="4" pattern="[0-9]{1,4}" title="wid" value='600' /><br><label>Height :</label><input type="text" id="hei" size="4" maxlength="4" pattern="[0-9]{1,4}" title="hei"
-                                    value='600' /></div><br>
-                            <div style="padding: 3px;"><button class="btn btn-primary m-1" id="fullButton" onclick='Scan(this)' value='PreDefinedResolutions'>Defined Resolutions Scan</button></div>
-                        </p>
-                    </div>
-                    <div class="col-6 col-sm-4" id="fullArea" data-toggle-group="fullArea" hidden>
-                        <p>
-                            <h5>Vertical Resolution range:</h5><span class="mb-2">Max : <input type="text" id="hiRes" size="4" maxlength="4" min="1" max="2160" pattern="[0-9]{1,4}" title="hiRes" value='600'/>to Min : <input type="text" id="loRes" size="4" maxlength="4" min="1" max="2160" pattern="[0-9]{1,4}" title="lowRes" value='600'/></span><br>
-                            <div style="padding: 3px;"><button class=" btn btn-primary" id="fullButton" onclick='Scan(this)' value="Full Scan">Full Scan</button></div>
-                        </p>
-                    </div>
                 </div>
             </div>
         </div>
         <div id='results'></div>
-    </div>
-    <div id='error' hidden></div>
-    <script src=" resolutionScan.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css" integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+        <div id="overlay">
+            <div class="cv-spinner">
+                <span class="spinner"></span>
+            </div>
+        </div>
+        <div id='error' hidden></div>
+        <script src=" resolutionScan.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css" integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
 </body>
 
 </html>
