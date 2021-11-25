@@ -24,20 +24,20 @@ function openCamera() {
     content.innerHTML += `<video id='video' width="600 " height="300 " autoplay playsinline hidden>
         Sorry, video element not supported in your browsers </video>`;
     let videoElem = document.getElementById('video');
-    // navigator.mediaDevices.getUserMedia(constraints)
-    //     .then(mediaStream => {
-    //         videoElem.srcObject = mediaStream;
-    //         receivedMediaStream = mediaStream;
-    //         window.localStream = mediaStream;
-    navigator.mediaDevices.enumerateDevices()
-        .then(gotDevices)
-        .catch(errorCallback);
+    navigator.mediaDevices.getUserMedia(constraints)
+        .then(mediaStream => {
+            //videoElem.srcObject = mediaStream;
+            //receivedMediaStream = mediaStream;
+            //window.localStream = mediaStream;
+            navigator.mediaDevices.enumerateDevices()
+                .then(gotDevices)
+                .catch(errorCallback);
 
-    // }).catch(err => {
-    //     // handling the error if any
-    //     errorElem.innerHTML += 'Err:' + JSON.stringify(err);
-    //     console.log(err);
-    // });
+        }).catch(err => {
+            // handling the error if any
+            errorElem.innerHTML += 'Err:' + JSON.stringify(err);
+            console.log(err);
+        });
 }
 
 function errorCallback(error) {
