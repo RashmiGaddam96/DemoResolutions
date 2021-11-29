@@ -21,8 +21,7 @@ function openCamera() {
 
 function videoStream(check) {
     let content = document.getElementById("videoDiv");
-    content.innerHTML += `<video id='video' width="600 " height="300 " autoplay playsinline hidden>
-        Sorry, video element not supported in your browsers </video>`;
+    content.innerHTML += `<video id='video' width='600' height='300' autoplay playsinline hidden> </video>`;
     let videoElem = document.getElementById('video');
     navigator.mediaDevices.getUserMedia(constraints)
         .then(mediaStream => {
@@ -38,12 +37,10 @@ function videoStream(check) {
         }).catch(err => {
             // handling the error if any
             errorElem.innerHTML += 'Err:' + JSON.stringify(err);
-            console.log(err);
         });
 }
 
 function errorCallback(error) {
-    console.log('navigator.getUserMedia error: ', error);
     errorElem.innerHTML += 'Error:: ' + JSON.stringify(error);
 }
 
@@ -62,11 +59,10 @@ function cameraDevicesList(devicesInfo) {
             camcount++;
         }
     }
-    console.log(devices);
 }
 
 const closeCamera = () => {
-    let content = document.querySelector("video");
+    let content = document.getElementById('videoDiv');
 
     if (receivedMediaStream) {
         /* MediaStream.getTracks() returns an array of all the 
@@ -77,21 +73,20 @@ const closeCamera = () => {
             mediaTrack.stop();
 
         });
-        console.log("Camera is already closed!")
-
-        setTimeout(() => {
-            console.log(localStream);
-            localStream.getVideoTracks()[0].stop();
-            content.src = '';
-            content.srcObject = null
-            var child = content.lastElementChild;
-            while (child) {
-                content.removeChild(child);
-                child = content.lastElementChild;
-            }
-        }, 10);
     }
+    setTimeout(() => {
+        localStream.getVideoTracks()[0].stop();
+        let video = document.getElementById('video');
+        video.src = '';
+        video.srcObject = null
+        let length = content.children.length;
+        for (let i = 0; i < length; i++) {
+            let child = content.lastElementChild;
+            content.removeChild(child);
+        }
+    }, 10);
 }
+
 
 
 function Scan(objectThis) {
@@ -100,7 +95,6 @@ function Scan(objectThis) {
     videoStream(false);
 
     //setup for a quick scan using the hand-built quickScan object
-    console.log("Quick scan");
     resultsList = resolutionsData;
     scanning = true;
 
@@ -116,23 +110,19 @@ function Scan(objectThis) {
                         camera.id = devices[z].value;
                         camera.label = devices[z].text;
                         selectedCamera[deviceCount] = camera;
-                        console.log(selectedCamera[deviceCount].label + "[" + selectedCamera[deviceCount].id + "] selected");
                         deviceCount++;
                     }
                 }
             }
         }
-        console.log(selectedCamera, "selectedCamera");
         //Make sure there is at least 1 camera selected before starting
         if (selectedCamera[0]) {
             checkResolutions(resultsList[r], selectedCamera[0]);
         } else {
-            console.log("No camera selected. Defaulting to " + deviceList[0].text);
             selectedCamera[0] = { id: deviceList[0].value, label: deviceList[0].text };
             checkResolutions(resultsList[r], selectedCamera[0]);
         }
     }
-    console.log(resultsList);
 }
 
 
@@ -150,8 +140,8 @@ function checkResolutions(candidate, device) {
         audio: false,
         video: {
             deviceId: device.id ? { exact: device.id } : undefined,
-            width: { exact: candidate.width }, //new syntax
-            height: { exact: candidate.height } //new syntax
+            width: { exact: candidate.width },
+            height: { exact: candidate.height }
         }
     };
 
@@ -161,11 +151,10 @@ function checkResolutions(candidate, device) {
                 gotStream(stream, candidate)
             })
             .catch((error) => {
-                console.log('getUserMedia error!', error);
                 errorElem.innerHTML += 'ErrorGetUderMediaError::' + JSON.stringify(error);
                 if (scanning) {
                     errorElem.innerHTML += 'ErrorFail::' + error;
-                    captureResults("Fail: " + error.name);
+                    captureResults('Fail: ' + error.name);
                 }
             });
     }, (window.stream ? 200 : 0));
@@ -174,10 +163,9 @@ function checkResolutions(candidate, device) {
 
 function gotStream(mediaStream, candidate) {
     //change the video dimensions
-    console.log("Display size for " + candidate.label + ": " + candidate.width + "x" + candidate.height + " Sucess");
     window.stream = mediaStream;
     video.srcObject = mediaStream;
-    captureResults("Success")
+    captureResults('Success')
 }
 
 function captureResults(status) {
@@ -188,7 +176,7 @@ function captureResults(status) {
     //go to the next resultsList
     if (r < resultsList.length) {
         checkResolutions(resultsList[r], selectedCamera[camNum]);
-    } else if (camNum < selectedCamera.length - 1) { //move on to the next camera
+    } else if (camNum < selectedCamera.length - 1) { //move on to the next camera if existed
         camNum++;
         r = 0;
         checkResolutions(resultsList[r], selectedCamera[camNum])
@@ -197,7 +185,6 @@ function captureResults(status) {
         if (devices) {
             setTimeout(() => {
                 displayResults();
-
             }, 10)
         }
     }
@@ -206,7 +193,7 @@ function captureResults(status) {
 function displayResults() {
     var results = resultsList;
     let text = "<h4> Selected Camera :" + selectedCamera[camNum].label + "</h4>";;
-    var html = text + ` <table class = "table table-bordered m-2" > <tr> <th> Label </th><th>Width x Height</th> <th> Ratio </th><th>Status</th> </tr>`;
+    var html = text + ` <table class = 'table table-bordered m-2' > <tr> <th> Label </th><th>Width x Height</th> <th> Ratio </th><th>Status</th> </tr>`;
     for (var i = 0; i < results.length; i++) {
         html += "<tr>";
         html += "<td>" + results[i].label + "</td>";

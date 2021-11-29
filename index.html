@@ -1,11 +1,10 @@
-<html lang="en">
+<html lang='en'>
 
 <head>
-    <link rel="shortcut icon" href="#">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, 
-                   initial-scale=1.0">
-    <title>GetCamera Resolutions</title>
+    <link rel='shortcut icon' href='#'>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Get Camera Resolutions</title>
     <style>
         #cover-spin {
             position: fixed;
@@ -56,43 +55,44 @@
     </style>
 </head>
 
-<body class="col-6">
-    <div id="cover-spin" hidden></div>
-    <div class="container m-5 p-2 rounded mx-auto bg shadow">
-        <h1 class="text-center">Camera Checks</h1>
-        <div id="videoDiv"></div>
-        <div class="row rounded">
-            <div class='col-lg-3' style="padding: 5px;padding-bottom: 10px !important;margin-bottom: 5px; border: 5px solid rgb(97, 87, 92);border-radius: 20px; ">
-                <div id="selectArea" style="visibility: hidden;padding: 5px;padding-bottom: 8px !important;margin-bottom: 8px;">
-                    <h4>Select camera(s) below:</h4><select id="devices" name="Video devices" multiple title="devices"></select></div>
+<body class='col-6'>
+    <div id='cover-spin' hidden></div>
+    <div class='container m-5 p-2 rounded mx-auto bg shadow'>
+        <h1 class='text-center'>Camera Checks</h1>
+        <div id='videoDiv'></div>
+        <div class='row rounded'>
+            <div class='col-lg-3' style='padding: 5px;padding-bottom: 10px !important;margin-bottom: 5px; border: 5px solid rgb(97, 87, 92);border-radius: 20px; '>
+                <div id='selectArea' style='visibility: hidden;padding: 5px;padding-bottom: 8px !important;margin-bottom: 8px;'>
+                    <h4>Select camera(s) below:</h4><select id='devices' name='Video devices' multiple title='devices'></select></div>
                 <h6>Note: Please Select any of the camera in the drop down. Default would be pointed out to first camera</h6>
             </div>
             <div class='col-lg-9 '>
-                <div class="row d-flex align-items-stretch" style="padding: 5px; margin:10px; border: 5px solid transparent;border-radius: 20px;box-shadow: 5px 10px rgb(248, 245, 245) ">
-                    <div class="col-6 col-sm-4" id="quickArea" data-toggle-group="quickArea">
-                        <h5 style="margin-bottom: 2px;">Scans the constant resolutions</h5>
-                        <div style="padding: 3px;"><button class="btn btn-primary btn-block" id="quickButton" onclick='Scan(this)' value="Quick Scan">Quick Scan</button></div>
+                <div class='row d-flex align-items-stretch' style='padding: 5px; margin:10px; border: 5px solid transparent;border-radius: 20px;box-shadow: 5px 10px rgb(248, 245, 245) '>
+                    <div class='col-6 col-sm-4' id='quickArea' data-toggle-group='quickArea'>
+                        <h5 style='margin-bottom: 2px;'>Scans the constant resolutions</h5>
+                        <div style='padding: 3px;'>
+                            <button class='btn btn-primary btn-block' id='quickButton' onclick='Scan(this)'>Check Resolutions</button></div>
                     </div>
                 </div>
             </div>
         </div>
         <div id='results'></div>
-        <div id="overlay">
-            <div class="cv-spinner">
-                <span class="spinner"></span>
+        <div id='overlay'>
+            <div class='cv-spinner'>
+                <span class='spinner'></span>
             </div>
         </div>
         <div id='error' hidden></div>
-        <script src=" resolutionScan.js"></script>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <script src='resolutionScan.js'></script>
+        <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css'>
+        <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
+        <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js'></script>
         <!-- Latest compiled and minified CSS -->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+        <link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css' integrity='sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu' crossorigin='anonymous'>
         <!-- Optional theme -->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css" integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
+        <link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css' integrity='sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ' crossorigin='anonymous'>
         <!-- Latest compiled and minified JavaScript -->
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+        <script src='https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js' integrity='sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd' crossorigin='anonymous'></script>
 </body>
 
 </html>
