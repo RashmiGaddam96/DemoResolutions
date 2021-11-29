@@ -71,10 +71,24 @@
                     <div class='col-6 col-sm-4' id='quickArea' data-toggle-group='quickArea'>
                         <h5 style='margin-bottom: 2px;'>Scans the constant resolutions</h5>
                         <div style='padding: 3px;'>
-                            <button class='btn btn-primary btn-block' id='quickButton' onclick='Scan(this)'>Check Resolutions</button></div>
+                            <button class='btn btn-primary btn-block' id='quickButton' onclick='Scan(this)' value='Quick Scan'>Check Resolutions</button></div>
                     </div>
                 </div>
             </div>
+
+            <div class='col-lg-9 '>
+                <div class='row d-flex align-items-stretch' style='padding: 5px; margin:10px; border: 5px solid transparent;border-radius: 20px;box-shadow: 5px 10px rgb(248, 245, 245) '>
+                    <div class='col-6 col-sm-4' id='quickArea' data-toggle-group='quickArea'>
+                        <p>
+                            <h5 style="margin-bottom: 2px;">Width x Height </h5>
+                            <div style="margin:2px; padding :1px;"><label>Width :</label><input type="text" id="wid" size="4" maxlength="4" pattern="[0-9]{1,4}" title="wid" value='600' /><br><label>Height :</label><input type="text" id="hei" size="4" maxlength="4" pattern="[0-9]{1,4}" title="hei"
+                                    value='600' /></div><br>
+                            <div style="padding: 3px;"><button class="btn btn-primary m-1" id="fullButton" onclick='Scan(this)' value='PreDefinedResolutions'>Defined Resolutions Scan</button></div>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
         </div>
         <div id='results'></div>
         <div id='overlay'>

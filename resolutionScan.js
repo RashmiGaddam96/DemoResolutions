@@ -93,9 +93,17 @@ function Scan(objectThis) {
     $('#cover-spin').show(0);
     $(':button').prop('disabled', true); // Disable all the buttons
     videoStream(false);
+    let buttonValue = objectThis.value;
+    if (buttonValue === "Quick Scan") {
+        console.log("Quick scan");
+        resultsList = resolutionsData;
 
+    } else if (buttonValue == "PreDefinedResolutions") {
+        let wid = document.getElementById("wid").value;
+        let hei = document.getElementById("hei").value;
+        resultsList = definedResolutions(wid, hei);
+    }
     //setup for a quick scan using the hand-built quickScan object
-    resultsList = resolutionsData;
     scanning = true;
 
     if (devices) {
@@ -208,6 +216,20 @@ function displayResults() {
     $(':button').prop('disabled', false); // Enable all the buttons
     closeCamera();
     $('#cover-spin').hide();
+}
+
+function definedResolutions(width, height) {
+    let resolutions = [],
+        res;
+
+    res = {
+        "label": width + "x" + height,
+        "width": width, //this was returning a string
+        "height": height,
+        "ratio": ""
+    };
+    resolutions.push(res);
+    return resolutions;
 }
 
 
