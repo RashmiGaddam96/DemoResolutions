@@ -118,6 +118,9 @@ function Scan(objectThis) {
                         camera.id = devices[z].value;
                         camera.label = devices[z].text;
                         selectedCamera[deviceCount] = camera;
+                        errorElem.innerHTML += 'selectedCamera::' + selectedCamera[deviceCount].id;
+                        errorElem.innerHTML += 'selectedCamera::' + selectedCamera[deviceCount].label;
+
                         deviceCount++;
                     }
                 }
@@ -148,8 +151,9 @@ function checkResolutions(candidate, device) {
         audio: false,
         video: {
             deviceId: device.id ? { exact: device.id } : undefined,
-            width: { exact: candidate.width },
-            height: { exact: candidate.height }
+            width: { min: candidate.width },
+            height: { min: candidate.height },
+            facingMode: 'user'
         }
     };
 
