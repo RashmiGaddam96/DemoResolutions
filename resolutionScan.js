@@ -151,8 +151,8 @@ function checkResolutions(candidate, device) {
         audio: false,
         video: {
             deviceId: device.id ? { exact: device.id } : undefined,
-            width: { min: candidate.width },
-            height: { min: candidate.height },
+            width: { exact: candidate.width },
+            height: { exact: candidate.height },
             facingMode: 'user'
         }
     };
